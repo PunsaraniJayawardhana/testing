@@ -1,16 +1,19 @@
-# File Path: automation/Dockerfile
+# automation/Dockerfile
 
 FROM cypress/included:12.17.4
 
 WORKDIR /e2e
 
-# Copy package.json and package-lock.json first to leverage Docker cache
+# Copy package files first
 COPY package*.json ./
-RUN npm install
 
+# Install Cypress dependencies, including ts-node and typescript
+RUN npm install \
+    ts-node \
+    typescript
 
-# Then copy the rest of your automation folder contents
+# Copy the rest of the test code
 COPY . .
 
-
+# Use ts-node to run TypeScript config
 CMD ["npx", "cypress", "run", "--browser", "chrome", "--e2e", "--headless", "--record"]
