@@ -7,6 +7,12 @@ WORKDIR /e2e
 COPY package*.json ./
 RUN npm install
 
+
+# --- ADD THIS LINE TO INSTALL ts-node ---
+RUN npm install -D ts-node
+# --- OR, if you use yarn: yarn add -D ts-node ---
+# ------------------------------------------
+
 # Then copy the rest of your automation folder contents
 COPY . .
 
