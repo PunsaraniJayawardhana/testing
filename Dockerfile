@@ -16,5 +16,6 @@ RUN npm install \
 COPY . .
 
 # Use ts-node to run TypeScript config
-CMD ["npx", "cypress", "run", "--browser", "chrome", "--e2e", "--headless", "--record", "--config-file", "cypress/cypress.config.ts"]
+CMD ["npx", "cypress", "run", "--browser", "chrome", "--e2e", "--headless", "--record", "--config-file", "cypress.config.ts"]
+
 
