@@ -11,4 +11,4 @@ RUN npm install
 COPY . .
 
 # This is the corrected CMD
-CMD ["npx", "cypress", "run", "--browser", "chrome", "--e2e", "--headless"]
+CMD ["npx", "cypress", "run", "--browser", "chrome", "--e2e", "--headless", "--record"]
