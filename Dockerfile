@@ -1,21 +1,20 @@
-# automation/Dockerfile
-
 FROM cypress/included:12.17.4
 
 WORKDIR /e2e
 
-# Copy package files first
+# Copy package.json files first
 COPY package*.json ./
 
-# Install Cypress dependencies, including ts-node and typescript
+# Install ts-node and typescript so Cypress can understand `.ts` config
 RUN npm install \
+    typescript \
     ts-node \
-    typescript
+    @cypress/webpack-preprocessor
 
-# Copy the rest of the test code
+# Copy all remaining files
 COPY . .
 
-# Use ts-node to run TypeScript config
+# Let Cypress know how to run TS config
+ENV NODE_OPTIONS="--loader ts-node/esm"
+
 CMD ["npx", "cypress", "run", "--browser", "chrome", "--e2e", "--headless", "--record", "--config-file", "cypress.config.ts"]
-
-
