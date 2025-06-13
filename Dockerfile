@@ -8,5 +8,5 @@ COPY . .
 RUN npm ci
 
 # Only this:
-CMD sh -c "npx cypress run --record --key $CYPRESS_RECORD_KEY"
+CMD sh -c "npx cypress run --record --key=$CYPRESS_RECORD_KEY"
 
