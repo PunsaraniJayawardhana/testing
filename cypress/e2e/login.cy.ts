@@ -3,7 +3,7 @@ import inputs from "../../auth_test/data/input";
 
 describe('Login Page Test', () => { 
   beforeEach(() => {
-   cy.visit('/login');
+   cy.visit('/');
    cy.wait(1000);
   });
 
