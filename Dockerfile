@@ -7,6 +7,6 @@ COPY . .
 
 RUN npm ci
 
-# Only this:
-CMD sh -c "npx cypress run --record --key=$CYPRESS_RECORD_KEY"
-
+# Split ENTRYPOINT and CMD to allow runtime args
+ENTRYPOINT ["npx", "cypress", "run"]
+CMD ["--record", "--key", "dummy"]

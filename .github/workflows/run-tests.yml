@@ -35,4 +35,6 @@ jobs:
             docker run -e CYPRESS_baseUrl=http://login-app-forntend-bucket.s3-website-us-east-1.amazonaws.com \
                        -e CYPRESS_RECORD_KEY=${{ secrets.CYPRESS_RECORD_KEY }} \
                        cypress-tests
+                        --record \
+              --key=${{ secrets.CYPRESS_RECORD_KEY }}
           EOF
