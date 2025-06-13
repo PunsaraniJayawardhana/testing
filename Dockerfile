@@ -9,4 +9,4 @@ RUN npm ci
 
 # Split ENTRYPOINT and CMD to allow runtime args
 ENTRYPOINT ["npx", "cypress", "run"]
-CMD ["--record", "--key", "dummy"]
+# CMD ["--record", "--key", "dummy"]
