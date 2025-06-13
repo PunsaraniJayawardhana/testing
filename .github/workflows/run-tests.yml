@@ -1,0 +1,35 @@
+name: Run Cypress Tests
+
+on:
+  push:
+    branches:
+      - main 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cypress-tests:
+    runs-on: ubuntu-latest
+
+    env:
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      CYPRESS_baseUrl: http://login-app-forntend-bucket.s3-website-us-east-1.amazonaws.com 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Cypress Docker container
+        run: |
+          docker build -t cypress-tests ./automation
+
+      - name: Run Cypress tests in Docker
+        run: |
+          docker run \
+            -e CYPRESS_baseUrl=$CYPRESS_baseUrl \
+            -e CYPRESS_RECORD_KEY=$CYPRESS_RECORD_KEY \
+            cypress-tests
