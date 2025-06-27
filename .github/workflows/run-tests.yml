@@ -59,6 +59,5 @@ jobs:
               -e CYPRESS_RECORD_KEY=${{ secrets.CYPRESS_RECORD_KEY }} \
               cypress-tests \
               --record --key ${{ secrets.CYPRESS_RECORD_KEY }}
-
             EOF
 
