@@ -10,8 +10,21 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.27.7",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-typescript": "^7.27.1",
+    "@cypress/code-coverage": "^3.14.5",
+    "@cypress/webpack-preprocessor": "^6.0.4",
+    "babel-plugin-istanbul": "^7.0.0",
     "cypress": "^14.4.1",
+    "istanbul": "^0.4.5",
+    "istanbul-lib-coverage": "^3.2.2",
+    "nyc": "^17.1.0",
+    "sonar-scanner": "^3.1.0",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
   }
 }
