@@ -10,12 +10,27 @@ on:
 
 jobs:
   deploy-test:
-    name: Deploy and Run Cypress on EC2
+    name: Deploy, Analyze and Run Cypress on EC2
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Setup SSH key
         run: |
@@ -24,10 +39,8 @@ jobs:
 
       - name: SSH and Run Cypress Tests in Docker
         run: |
-          ssh -o StrictHostKeyChecking=no -i automation-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<'EOF'
+          ssh -o StrictHostKeyChecking=no -i automation-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             set -e
-
-            # Clone repo if not present, or pull latest
             if [ ! -d ~/testing ]; then
               git clone https://github.com/your-org/testing.git ~/testing
             fi
