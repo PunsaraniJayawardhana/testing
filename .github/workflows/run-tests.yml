@@ -24,23 +24,41 @@ jobs:
 
       - name: SSH and Run Cypress Tests in Docker
         run: |
-          ssh -o StrictHostKeyChecking=no -i automation-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            set -e
+          ssh -vvv -o StrictHostKeyChecking=no -i automation-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -xe  # exit on error + print each command
 
-            # Clone repo if not present, or pull latest
-            if [ ! -d ~/testing ]; then
-              git clone https://github.com/your-org/testing.git ~/testing
+            echo "User: $(whoami)"
+            echo "Checking SSH keys and known_hosts:"
+            ls -la ~/.ssh/
+            cat ~/.ssh/known_hosts || echo "No known_hosts file"
+
+            echo "Add GitHub to known_hosts to avoid host verification error"
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+            # Show current git remotes and branches
+            cd ~
+            if [ ! -d testing ]; then
+              echo "Cloning repo because testing folder does not exist"
+              git clone https://github.com/your-org/testing.git testing
+            else
+              echo "Repo folder exists"
             fi
-            cd ~/testing
+            cd testing
+            git remote -v
+            git branch -vv
+
+            echo "Pull latest changes"
             git pull origin main
 
-            echo "Running Cypress tests inside Docker container..."
-
+            echo "Build Docker image"
             docker build -t cypress-tests .
 
+            echo "Run Cypress tests in Docker container"
             docker run \
               -e CYPRESS_baseUrl=http://login-app-forntend-bucket.s3-website-us-east-1.amazonaws.com \
               -e CYPRESS_RECORD_KEY=${{ secrets.CYPRESS_RECORD_KEY }} \
               cypress-tests \
               --record --key ${{ secrets.CYPRESS_RECORD_KEY }}
-          EOF
+
+            EOF
+
